@@ -170,25 +170,24 @@ const rates = {
   ZWL: 358.005505,
 }
 
-function exchange(amount, fromCurency, toCurrency) {
-  let firstCurrency = rates[fromCurency],
-    secondCurrency = rates[toCurrency]
-  return `${amount} ${fromCurency} = ${((amount / firstCurrency) * secondCurrency)} ${toCurrency}`
+function exchange(amount, fromCurrency, toCurrency) {
+  let firstCurrency = rates[fromCurrency],
+    secondCurrency = rates[toCurrency],
+    exchangedMoney = ((amount / firstCurrency) * secondCurrency),
+    result = () => {
+      if (exchangedMoney >= 1) return exchangedMoney.toFixed(1)
+      if (exchangedMoney < 1) return exchangedMoney.toFixed(5)
+      return alert('Something went wrong!\nTr again, please.')
+    }
+  return `${amount} ${fromCurrency} = ${new Intl.NumberFormat().format(result())} ${toCurrency}`
 }
 
-console.log(exchange(100, 'USD', 'MMK'))
-
 let amount = document.querySelector('#amount'),
-  fromCurency = document.querySelector('#from'),
-  toCurrency = document.querySelector('#to'),
-  exchangeIt = document.querySelector('#exchange')
+  fromCurrency = document.querySelector('#fromCurrency'),
+  toCurrency = document.querySelector('#toCurrency'),
+  exchangeIt = document.querySelector('#exchange'),
+  answer = document.querySelector('#answer')
 
 exchangeIt.addEventListener('click', () =>
-  console.log(exchange(amount.value, fromCurency.value, toCurrency.value)
-  ))
-
-// let money = []
-
-// for (m in rates) {
-//   money.push(m)
-// }
+  answer.innerHTML = exchange(amount.value, fromCurrency.value, toCurrency.value)
+)
